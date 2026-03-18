@@ -46,10 +46,6 @@ table td {
     width: 20%;
 }
 
-td{
-    column-width: auto;
-}
-
 .szary-wiersz {
     background-color: #bdc3c7;
 }
