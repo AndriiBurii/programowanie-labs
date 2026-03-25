@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial,sans-serif;
+}
+
+#global_container{
+    width: 100%;
+    margin: 0 auto;
+}
+
+#top_bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: darkgreen;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 60px;
+    z-index: 1000;
+}
+
+#logo_div{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    background-color: #f0c040;
+    border: 1px solid #ccc;
+}
+
+#logo_div h1{
+    font-size: 1rem;
+    color: #000;
+}
+
+#nav_container{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    margin-right: 20%;
+}
+
+.nav_item{
+    border: 1px solid #999;
+    padding: 0px 20px;
+    background-color: cyan;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 80%;
+}
+
+#content_container{
+    margin-top: 60px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    background-color: orange;
+}
+
+ul.first_list{
+    margin-left: 20px;
+    text-align: right;
+    list-style: disc;
+    color: #000;
+}
+
+ul.second_list{
+    list-style: disc;
+    padding-left: 20px;
+    color: #000;
+}
+
+#content_container div{
+    text-decoration: underline;
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1.5;
+    color: #000;
+    text-align: justify;
+    margin-top: 10px;
+}
+
+#footer{
+    width: 100%;
+    background-color: #c0392b;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-left: 0;
+}
