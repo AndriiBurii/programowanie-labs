@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 2</title>
+  </head>
+  <body>
+    <script>
+      let tablica = [];
+      function wypiszParzyste(a, b) {
+        for (let i = a; i <= b; i++) {
+          if (i % 2 === 0) {
+            tablica.push(i);
+          }
+        }
+        console.log(tablica);
+      }
+
+      wypiszParzyste(2, 10);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 5</title>
+  </head>
+  <body>
+    <script>
+      function obliczPi(n) {
+        let suma = 0;
+        for (let i = 0; i < n; i++) {
+          let ulamek = 1 / (2 * i + 1);
+          if (i % 2 !== 0) {
+            ulamek = -ulamek;
+          }
+          suma += ulamek;
+        }
+        let y = 4 * suma;
+        console.log(`Obliczona wartość liczby pi: ${y}`);
+      }
+
+      obliczPi(10000);
+    </script>
+  </body>
+</html>

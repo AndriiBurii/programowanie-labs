@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 4</title>
+  </head>
+  <body>
+    <script>
+      function obliczSilnie(n) {
+        if (n == 0 || n == 1) {
+          return 1;
+        }
+        return n * obliczSilnie(n - 1);
+      }
+
+      function wypiszSilnie(n) {
+        console.log(`Silnia z ${n} wynosi ${obliczSilnie(n)}`);
+      }
+
+      wypiszSilnie(5);
+    </script>
+  </body>
+</html>

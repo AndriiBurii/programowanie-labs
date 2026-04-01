@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 3</title>
+  </head>
+  <body>
+    <script>
+      function ciagFibonacciego(n) {
+        if (n <= 0) return console.log([]);
+        if (n === 1) return console.log([0]);
+        if (n === 2) return console.log([0, 1]);
+        let tablica = [0, 1];
+        for (let i = 2; i < n + 1; i++) {
+          tablica.push(tablica[i - 1] + tablica[i - 2]);
+        }
+        console.log(tablica);
+      }
+
+      ciagFibonacciego(8);
+    </script>
+  </body>
+</html>
