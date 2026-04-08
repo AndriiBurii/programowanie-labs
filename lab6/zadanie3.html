@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 3 - Aktualny czas API</title>
+  </head>
+  <body>
+    <div id="wynik">Pobieranie czasu</div>
+    <script>
+      async function fetchTime() {
+        {
+          const response = await fetch(
+            "https://timeapi.io/api/Time/current/zone?timeZone=Europe/Warsaw"
+          );
+          const data = await response.json();
+          document.getElementById("wynik").innerHTML =
+            `Aktualny czas: ${data.time} <br> Data: ${data.date}`;
+        }
+      }
+      fetchTime();
+    </script>
+  </body>
+</html>

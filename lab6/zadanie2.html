@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      #reset {
+        display: inline-block;
+      }
+      #stop {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="czas">
+      <span id="godziny">00</span>:<span id="minuty">00</span>:<span
+        id="sekundy"
+        >00</span
+      >
+    </h1>
+    <button id="start">START</button>
+    <button id="zapisz">ZAPISZ</button>
+    <button id="stop">STOP</button>
+    <button id="reset">RESET</button>
+    <p id="stan_stopera"></p>
+    <ul id="zapisane_czasy"></ul>
+
+    <script>
+      let s = 0,
+        m = 0,
+        h = 0,
+        interval = null;
+
+      const btnStart = document.getElementById("start");
+      const btnStop = document.getElementById("stop");
+      const btnZapisz = document.getElementById("zapisz");
+      const btnReset = document.getElementById("reset");
+      const stan = document.getElementById("stan_stopera");
+
+      function updateDisplay() {
+        document.getElementById("sekundy").innerText = s < 10 ? "0" + s : s;
+        document.getElementById("minuty").innerText = m < 10 ? "0" + m : m;
+        document.getElementById("godziny").innerText = h < 10 ? "0" + h : h;
+      }
+
+      function setButtons(state) {
+        btnStart.style.display = state === "counting" ? "none" : "inline-block";
+        btnStop.style.display = state === "counting" ? "inline-block" : "inline-block";
+        btnReset.style.display =
+          state === "stopped"
+            ? "inline-block"
+            : state === "initial"
+              ? "inline-block"
+              : "none";
+        btnZapisz.style.display = "inline-block";
+      }
+
+      btnStart.onclick = () => {
+        if (!interval) {
+          interval = setInterval(() => {
+            s++;
+            if (s === 60) {
+              s = 0;
+              m++;
+            }
+
+            if (m === 60) {
+              m = 0;
+              h++;
+            }
+            updateDisplay();
+          }, 1000);
+        }
+
+        stan.innerText = "Trwa obliczanie...";
+      };
+
+      btnStop.onclick = () => {
+        clearInterval(interval);
+        interval = null;
+        stan.innerText = "Wstrzymano obliczanie";
+        setButtons("stopped");
+      };
+
+      btnZapisz.onclick = () => {
+        const timeStr = `${h < 10 ? "0" + h : h}:${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`;
+        const li = document.createElement("li");
+        li.innerText = timeStr;
+        document.getElementById("zapisane_czasy").appendChild(li);
+      };
+
+      btnReset.onclick = () => {
+        clearInterval(interval);
+        interval = null;
+        s = m = h = 0;
+        updateDisplay();
+        document.getElementById("zapisane_czasy").innerHTML = "";
+        stan.innerText = "";
+        setButtons('initial')
+      };
+    </script>
+  </body>
+</html>
