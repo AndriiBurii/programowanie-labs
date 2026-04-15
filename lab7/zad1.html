@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadanie 1</title>
+  </head>
+  <body>
+    <h2>Dzielenie liczb</h2>
+
+    <label>Liczba 1: <input type="text" id="l1" /></label> <br /><br />
+    <label>Liczba 2: <input type="text" id="l2" /></label> <br /><br />
+    <button onclick="divide()">Podzielić</button>
+
+    <p id="result"></p>
+
+    <script>
+      function divide() {
+        const result = document.getElementById("result");
+
+        try {
+          const raw1 = document
+            .getElementById("l1")
+            .value.trim()
+            .replace(",", ".");
+          const raw2 = document
+            .getElementById("l2")
+            .value.trim()
+            .replace(",", ".");
+
+          if (raw1 === "" || raw2 === "") {
+            throw new Error("Oba polą muszą zostać wypełnione.");
+          }
+
+          const a = parseFloat(raw1);
+          const b = parseFloat(raw2);
+
+          if (isNaN(a) || isNaN(b)) {
+            throw new Error("Wprowadzone dane nie są liczbą.");
+          }
+
+          if (b === 0) {
+            throw new Error("Dzielenie przez zero nie jest możliwe.");
+          }
+
+          result.textContent = `${a}/${b} = ${a / b}`;
+        } catch (e) {
+          result.textContent = "Error: " + e.message;
+        }
+      }
+    </script>
+  </body>
+</html>
