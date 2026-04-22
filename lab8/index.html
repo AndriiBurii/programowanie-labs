@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ćwiczenie 8 - JS Obiekty i Funkcje</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f8f9fa;
+      }
+      .section {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      input {
+        padding: 5px;
+        width: 200px;
+      }
+      button {
+        padding: 8px 15px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      pre {
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section">
+      <h2>Zadanie 1 - Formularz i Obiekt (JSON)</h2>
+      <form id="personForm">
+        <div class="form-group">
+          <input type="text" id="imie" placeholder="Imię" required />
+        </div>
+        <div class="form-group">
+          <input type="text" id="nazwisko" placeholder="Nazwisko" required />
+        </div>
+        <div class="form-group">
+          <input type="number" id="wiek" placeholder="Wiek" required />
+        </div>
+        <button type="submit">Zapisz i wyświetl</button>
+      </form>
+      <div id="outputZad1" style="margin-top: 15px"></div>
+    </div>
+
+    <div class="section">
+      <h2>Zadania 2-8 - Liczby Zespolone (Programowanie funkcjonalne)</h2>
+      <button id="runComplexBtn">Wygeneruj i oblicz</button>
+      <div id="outputComplex" style="margin-top: 15px"></div>
+    </div>
+
+    <script>
+      // ZADANIE 1
+      document.getElementById("personForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const imie = document.getElementById("imie").value;
+        const nazwisko = document.getElementById("nazwisko").value;
+        const wiek = Number(document.getElementById("wiek").value);
+
+        const osoba = { imie: imie, nazwisko: nazwisko, wiek: wiek };
+
+        console.log("Zad 1a - Cały obiekt:", osoba);
+
+        console.log("Zad 1b - Imię:", osoba.imie);
+        console.log("Zad 1b - Nazwisko:", osoba.nazwisko);
+        console.log("Zad 1b - Wiek:", osoba.wiek);
+
+        const osobaJSON = JSON.stringify(osoba);
+        console.log("Zad 1c - JSON:", osobaJSON);
+
+        document.getElementById("outputZad1").innerHTML = `
+            <strong>a) Obiekt:</strong> (sprawdź w konsoli F12)<br>
+            <strong>b) Osobno:</strong> Imię: ${osoba.imie}, Nazwisko: ${osoba.nazwisko}, Wiek: ${osoba.wiek}<br>
+            <strong>c) JSON:</strong> <code>${osobaJSON}</code>
+        `;
+      });
+
+      // ZADANIE 2 - Klasa ComplexNumber
+      class ComplexNumber {
+        constructor(real, imaginary) {
+          this.real = real;
+          this.imaginary = imaginary;
+        }
+
+        wypisz() {
+          const znak = this.imaginary < 0 ? "-" : "+";
+          return `${this.real} ${znak} ${Math.abs(this.imaginary)}i`;
+        }
+
+        module() {
+          return Math.sqrt(
+            Math.pow(this.real, 2) + Math.pow(this.imaginary, 2),
+          );
+        }
+      }
+
+      // ZADANIE 3 - Funkcja generująca
+      const generujTabliceZespolonych = (ile) => {
+        const tablica = [];
+        for (let i = 0; i < ile; i++) {
+          const r = Math.floor(Math.random() * 21) - 10;
+          const im = Math.floor(Math.random() * 21) - 10;
+          tablica.push(new ComplexNumber(r, im));
+        }
+        return tablica;
+      };
+
+      document.getElementById("runComplexBtn").addEventListener("click", () => {
+        let outputHTML = "";
+
+        const liczby = generujTabliceZespolonych(5);
+
+        outputHTML += `<strong>Wygenerowana tablica:</strong><br>`;
+        liczby.forEach((num) => {
+          outputHTML += `${num.wypisz()} (Moduł: ${num.module().toFixed(2)})<br>`;
+          console.log(num.wypisz());
+        });
+
+        // ZADANIE 4 - filter() (tylko dodatnie części)
+        const dodatnie = liczby.filter(
+          (num) => num.real > 0 && num.imaginary > 0,
+        );
+        outputHTML += `<br><strong>Zadanie 4 (Tylko dodatnie części - filter):</strong><br>`;
+        outputHTML +=
+          dodatnie.length > 0
+            ? dodatnie.map((n) => n.wypisz()).join("<br>")
+            : "Brak takich liczb";
+
+        // ZADANIE 5 - map() (zamienione części)
+        const zamienione = liczby.map(
+          (num) => new ComplexNumber(num.imaginary, num.real),
+        );
+        outputHTML += `<br><br><strong>Zadanie 5 (Zamienione części r i im - map):</strong><br>`;
+        outputHTML += zamienione.map((n) => n.wypisz()).join("<br>");
+
+        // ZADANIE 6 - reduce() (suma modułów)
+        const sumaModulow = liczby.reduce((acc, num) => acc + num.module(), 0);
+        outputHTML += `<br><br><strong>Zadanie 6 (Suma modułów - reduce):</strong><br>${sumaModulow.toFixed(2)}`;
+
+        // ZADANIE 7 - reduce() (najmniejsza wartość modułu)
+        const minModul = liczby.reduce(
+          (min, num) => (num.module() < min ? num.module() : min),
+          liczby[0].module(),
+        );
+        outputHTML += `<br><br><strong>Zadanie 7 (Najmniejszy moduł - reduce):</strong><br>${minModul.toFixed(2)}`;
+
+        // ZADANIE 8 - reduce() (obiekt o największym module)
+        const maxObiekt = liczby.reduce(
+          (maxObj, num) => (num.module() > maxObj.module() ? num : maxObj),
+          liczby[0],
+        );
+        outputHTML += `<br><br><strong>Zadanie 8 (Liczba o największym module - reduce):</strong><br>${maxObiekt.wypisz()} (Moduł: ${maxObiekt.module().toFixed(2)})`;
+
+        document.getElementById("outputComplex").innerHTML =
+          `<pre>${outputHTML}</pre>`;
+      });
+    </script>
+  </body>
+</html>
