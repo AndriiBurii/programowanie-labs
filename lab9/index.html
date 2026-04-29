@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gra Clicker - Minimal</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 600px;
+        margin: auto;
+      }
+      .sekcja {
+        border: 1px solid #aaa;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+      }
+      button {
+        padding: 10px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:disabled {
+        cursor: not-allowed;
+        color: #888;
+      }
+      .duzy-przycisk {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 15px 30px;
+        background-color: #e0e0e0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Prosty Clicker</h1>
+
+    <div class="sekcja">
+      <h2>Statystyki</h2>
+      <p>Punkty: <strong id="score">0</strong></p>
+      <p>Moc kliknięcia: <span id="click-power">1</span></p>
+      <p>Pasywny przychód (na sek): <span id="passive-income">0</span></p>
+    </div>
+
+    <button id="click-btn" class="duzy-przycisk">KLIKNIJ MNIE</button>
+
+    <div class="sekcja">
+      <h2>Sklep</h2>
+
+      <div>
+        <strong>1. Ulepsz Kliknięcie</strong> (Zwiększa punkty za klik) <br />
+        <button id="upg-click">
+          Kup (Koszt: <span id="cost-click">10</span>)
+        </button>
+      </div>
+      <hr />
+      <div>
+        <strong>2. Pasywny przychód</strong> (Punkty rosną same) <br />
+        <button id="upg-passive">
+          Kup (Koszt: <span id="cost-passive">50</span>)
+        </button>
+      </div>
+    </div>
+
+    <button id="reset-btn">Zresetuj zapis gry</button>
+
+    <script>
+      let state = {
+        score: 0,
+        clickPower: 1,
+        passiveIncome: 0,
+        clickCost: 10,
+        passiveCost: 50,
+        lastSaved: Date.now(),
+      };
+
+      function loadGame() {
+        const savedState = localStorage.getItem("clickerGameSaveMinimal");
+        if (savedState) {
+          state = JSON.parse(savedState);
+          calculateOfflineProgress();
+        }
+      }
+
+      function saveGame() {
+        state.lastSaved = Date.now();
+        localStorage.setItem("clickerGameSaveMinimal", JSON.stringify(state));
+      }
+
+      function calculateOfflineProgress() {
+        const now = Date.now();
+        const timeDiffMs = now - state.lastSaved;
+        const timeDiffSeconds = Math.floor(timeDiffMs / 1000);
+
+        if (timeDiffSeconds > 0 && state.passiveIncome > 0) {
+          const earnedPoints = timeDiffSeconds * state.passiveIncome;
+          state.score += earnedPoints;
+          alert(
+            `Nie było Cię ${timeDiffSeconds} sekund. Zarobiono pasywnie: ${earnedPoints} punktów!`,
+          );
+        }
+      }
+
+      function updateUI() {
+        document.getElementById("score").innerText = Math.floor(state.score);
+        document.getElementById("click-power").innerText = state.clickPower;
+        document.getElementById("passive-income").innerText =
+          state.passiveIncome;
+        document.getElementById("cost-click").innerText = state.clickCost;
+        document.getElementById("cost-passive").innerText = state.passiveCost;
+
+        document.getElementById("upg-click").disabled =
+          state.score < state.clickCost;
+        document.getElementById("upg-passive").disabled =
+          state.score < state.passiveCost;
+      }
+
+      document.getElementById("click-btn").addEventListener("click", () => {
+        state.score += state.clickPower;
+        updateUI();
+        saveGame();
+      });
+
+      document.getElementById("upg-click").addEventListener("click", () => {
+        if (state.score >= state.clickCost) {
+          state.score -= state.clickCost;
+          state.clickPower += 1;
+          state.clickCost = Math.floor(state.clickCost * 1.5);
+          updateUI();
+          saveGame();
+        }
+      });
+
+      document.getElementById("upg-passive").addEventListener("click", () => {
+        if (state.score >= state.passiveCost) {
+          state.score -= state.passiveCost;
+          state.passiveIncome += 1;
+          state.passiveCost = Math.floor(state.passiveCost * 1.5);
+          updateUI();
+          saveGame();
+        }
+      });
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        if (confirm("Usunąć zapis?")) {
+          localStorage.removeItem("clickerGameSaveMinimal");
+          location.reload();
+        }
+      });
+
+      setInterval(() => {
+        if (state.passiveIncome > 0) {
+          state.score += state.passiveIncome;
+          updateUI();
+          saveGame();
+        }
+      }, 1000);
+
+      loadGame();
+      updateUI();
+    </script>
+  </body>
+</html>
